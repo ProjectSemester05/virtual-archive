@@ -5,7 +5,7 @@ const LaunchRequestHandler = {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
     },
     handle(handlerInput) {
-        const speakOutput = 'Welcome, you can say Hello or Help. Which would you like to try?';
+        const speakOutput = 'Welcome to Virtual Archive. You can organize your items efficiently. just say add item ';
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
@@ -14,20 +14,41 @@ const LaunchRequestHandler = {
     }
 };
 
-const HelloWorldIntentHandler = {
+const CatalogueAddItemHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'HelloWorldIntent';
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'CatalogAddItemIntent';
     },
     handle(handlerInput) {
-        const speakOutput = 'Hello World!';
+        
+        const {requestEnvelope, responseBuilder} = handlerInput;
+        const {intent} = requestEnvelope.request;
+
+        const item = Alexa.getSlotValue(requestEnvelope, 'item');
+        const catalog = Alexa.getSlotValue(requestEnvelope, 'catalog');
+        const description = Alexa.getSlotValue(requestEnvelope, 'description');
+        
+        let speechText = ""
+        
+        if (description !== null && description !== undefined){
+            speechText = "You Successfully added "+item+" to the "+catalog+" catalog, saying "+description
+        } else {
+            speechText = "You Successfully added "+item+" to the "+catalog+" catalog"
+        }
+            
+        
+        
+        
+        
+        // const speakOutput = 'You can say hello to me! How can I help?';
 
         return handlerInput.responseBuilder
-            .speak(speakOutput)
-            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
+            .speak(speechText)
+            .reprompt(speechText)
             .getResponse();
     }
-};
+}
+
 
 const HelpIntentHandler = {
     canHandle(handlerInput) {
@@ -131,6 +152,7 @@ const ErrorHandler = {
     }
 };
 
+
 /**
  * This handler acts as the entry point for your skill, routing all request and response
  * payloads to the handlers above. Make sure any new handlers or interceptors you've
@@ -139,13 +161,12 @@ const ErrorHandler = {
 exports.handler = Alexa.SkillBuilders.custom()
     .addRequestHandlers(
         LaunchRequestHandler,
-        HelloWorldIntentHandler,
         HelpIntentHandler,
         CancelAndStopIntentHandler,
+        CatalogueAddItemHandler,
         FallbackIntentHandler,
         SessionEndedRequestHandler,
         IntentReflectorHandler)
     .addErrorHandlers(
         ErrorHandler)
-    .withCustomUserAgent('sample/hello-world/v1.2')
     .lambda();
