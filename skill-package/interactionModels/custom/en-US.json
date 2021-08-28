@@ -16,29 +16,196 @@
           "samples": []
         },
         {
-          "name": "HelloWorldIntent",
-          "slots": [],
-          "samples": [
-            "hello",
-            "how are you",
-            "say hi world",
-            "say hi",
-            "hi",
-            "say hello world",
-            "say hello"
-          ]
-        },
-        {
           "name": "AMAZON.NavigateHomeIntent",
           "samples": []
         },
         {
           "name": "AMAZON.FallbackIntent",
           "samples": []
+        },
+        {
+          "name": "CatalogAddItemIntent",
+          "slots": [
+            {
+              "name": "item",
+              "type": "AMAZON.FirstName",
+              "samples": [
+                "it is {item}",
+                "{item}",
+                "the item is {item}"
+              ],
+              "multipleValues": {
+                "enabled": true
+              }
+            },
+            {
+              "name": "catalog",
+              "type": "AMAZON.FirstName",
+              "samples": [
+                "save to {catalog}",
+                "it is {catalog}",
+                "catalogue is {catalog}"
+              ],
+              "multipleValues": {
+                "enabled": true
+              }
+            },
+            {
+              "name": "description",
+              "type": "AMAZON.FirstName",
+              "multipleValues": {
+                "enabled": true
+              }
+            }
+          ],
+          "samples": [
+            "Add {item} to {catalog} saying {description}",
+            "Add {item} to {catalog}",
+            "Add Item"
+          ]
         }
       ],
-      "types": []
-    }
+      "types": [
+        {
+          "values": [
+            {
+              "name": {
+                "value": "spoon"
+              }
+            },
+            {
+              "name": {
+                "value": "bottle"
+              }
+            },
+            {
+              "name": {
+                "value": "bike"
+              }
+            },
+            {
+              "name": {
+                "value": "car"
+              }
+            }
+          ],
+          "name": "itemType"
+        },
+        {
+          "values": [
+            {
+              "name": {
+                "value": "lining room"
+              }
+            },
+            {
+              "name": {
+                "value": "table"
+              }
+            },
+            {
+              "name": {
+                "value": "kitchen"
+              }
+            },
+            {
+              "name": {
+                "value": "garage"
+              }
+            }
+          ],
+          "name": "CatelogueType"
+        },
+        {
+          "values": [
+            {
+              "name": {
+                "value": "table spoon"
+              }
+            },
+            {
+              "name": {
+                "value": "green car"
+              }
+            }
+          ],
+          "name": "descriptions"
+        }
+      ]
+    },
+    "dialog": {
+      "intents": [
+        {
+          "name": "CatalogAddItemIntent",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "item",
+              "type": "AMAZON.FirstName",
+              "elicitationRequired": true,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.1027512544964.273647361202"
+              }
+            },
+            {
+              "name": "catalog",
+              "type": "AMAZON.FirstName",
+              "elicitationRequired": true,
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.1027512544964.1069059949242"
+              }
+            },
+            {
+              "name": "description",
+              "type": "AMAZON.FirstName",
+              "elicitationRequired": false,
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ]
+        }
+      ],
+      "delegationStrategy": "ALWAYS"
+    },
+    "prompts": [
+      {
+        "id": "Elicit.Slot.1027512544964.273647361202",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Item?"
+          },
+          {
+            "type": "PlainText",
+            "value": "What is the Item?"
+          },
+          {
+            "type": "PlainText",
+            "value": "What item do you want to save?"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.1027512544964.1069059949242",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "catalogue?"
+          },
+          {
+            "type": "PlainText",
+            "value": "which catalogue?"
+          },
+          {
+            "type": "PlainText",
+            "value": "to which catalog should I save?"
+          }
+        ]
+      }
+    ]
   },
-  "version": "3"
+  "version": "4"
 }
