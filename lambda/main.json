@@ -1,0 +1,19 @@
+{
+    "type": "APL",
+    "version": "1.0",
+    "mainTemplate": {
+        "parameters": [
+            "payload"
+        ],
+        "items": [
+            {
+                "type": "Text",
+                "text": "Welcome to Virtual Archive"
+            },
+            {
+                "type": "Text",
+                "text": "Catalogues"
+            }
+        ]
+    }
+}

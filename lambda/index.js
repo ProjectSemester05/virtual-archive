@@ -2,6 +2,7 @@ const Alexa = require('ask-sdk-core');
 const AWS = require('aws-sdk');
 const ddb = new AWS.DynamoDB.DocumentClient({region: 'us-east-1'});
 const dynamoDBTableName = "CatalogueDB";
+const main = require('./main.json');
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'LaunchRequest';
@@ -11,6 +12,12 @@ const LaunchRequestHandler = {
 
         return handlerInput.responseBuilder
             .speak(speakOutput)
+            .addDirective({
+        type: 'Alexa.Presentation.APL.RenderDocument',
+        version: '1.0',
+        document: main,
+        datasources: {}
+      })
             .reprompt(speakOutput)
             .getResponse();
     }
@@ -33,9 +40,9 @@ const CatalogueAddItemHandler = {
         let speechText = ""
         
         if (description !== null && description !== undefined){
-            speechText = "You Successfully added "+item+" to the "+catalog+" catalog, saying "+description
+            speechText = "You Successfully added "+item+" to the "+catalog+" catalogue, saying "+description
         } else {
-            speechText = "You Successfully added "+item+" to the "+catalog+" catalog"
+            speechText = "You Successfully added "+item+" to the "+catalog+" catalogue"
         }
             
         
@@ -178,7 +185,34 @@ const AddReminderIntentHandler = {
             .reprompt(speechText)
             .getResponse();
     }
-}
+};
+const UpdateReminderHandler = {
+    canHandle(handlerInput) {
+        return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'UpdateReminderIntent';
+    },
+    handle(handlerInput) {
+        
+        const {requestEnvelope, responseBuilder} = handlerInput;
+        const {intent} = requestEnvelope.request;
+
+        const item = Alexa.getSlotValue(requestEnvelope, 'item');
+        const catalog = Alexa.getSlotValue(requestEnvelope, 'catalog');
+        const reminder = Alexa.getSlotValue(requestEnvelope, 'reminder');
+        
+        let speechText = "";
+        
+        speechText = "Reminder of the " +item+ " in the "+catalog+" catalog is updated into "+reminder ;
+        
+        
+        // const speakOutput = 'You can say hello to me! How can I help?';
+
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .reprompt(speechText)
+            .getResponse();
+    }
+};
 const HelpIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
@@ -298,6 +332,7 @@ exports.handler = Alexa.SkillBuilders.custom()
         UpdateItemHandler,
         DeleteItemHandler,
         AddReminderIntentHandler,
+        UpdateReminderHandler,
         FallbackIntentHandler,
         SessionEndedRequestHandler,
         IntentReflectorHandler)
