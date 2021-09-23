@@ -271,6 +271,77 @@
                         "delete {item} from {catalog}",
                         "delete item"
                     ]
+                },
+                {
+                    "name": "ViewDescriptionIntent",
+                    "slots": [
+                        {
+                            "name": "item",
+                            "type": "AMAZON.FirstName",
+                            "samples": [
+                                "it is {item}",
+                                "{item}",
+                                "in {item}"
+                            ],
+                            "multipleValues": {
+                                "enabled": true
+                            }
+                        },
+                        {
+                            "name": "catalog",
+                            "type": "AMAZON.FirstName",
+                            "samples": [
+                                "in {catalog}",
+                                "it is {catalog}",
+                                "{catalog}"
+                            ],
+                            "multipleValues": {
+                                "enabled": true
+                            }
+                        }
+                    ],
+                    "samples": [
+                        "tell me the description of {item} in {catalog}",
+                        "tell me the description of {item}",
+                        "tell me the description",
+                        "what is the description",
+                        "what is the description of {item}",
+                        "what is the description of {item} in {catalog}"
+                    ]
+                },
+                {
+                    "name": "ViewReminderIntent",
+                    "slots": [
+                        {
+                            "name": "item",
+                            "type": "AMAZON.FirstName",
+                            "samples": [
+                                "it is {item}",
+                                "in {item}",
+                                "{item}"
+                            ],
+                            "multipleValues": {
+                                "enabled": true
+                            }
+                        },
+                        {
+                            "name": "catalog",
+                            "type": "AMAZON.FirstName",
+                            "samples": [
+                                "it is {catalog}",
+                                "in {catalog}",
+                                "{catalog}"
+                            ],
+                            "multipleValues": {
+                                "enabled": true
+                            }
+                        }
+                    ],
+                    "samples": [
+                        "what is the reminder of {item}",
+                        "what is the reminder",
+                        "what is the reminder of {item} in {catalog}"
+                    ]
                 }
             ],
             "types": [
@@ -698,6 +769,56 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "ViewDescriptionIntent",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "item",
+                            "type": "AMAZON.FirstName",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.1411552887839.110214913936"
+                            }
+                        },
+                        {
+                            "name": "catalog",
+                            "type": "AMAZON.FirstName",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.1411552887839.1451325821214"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "ViewReminderIntent",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "item",
+                            "type": "AMAZON.FirstName",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.1526112623395.1548797091222"
+                            }
+                        },
+                        {
+                            "name": "catalog",
+                            "type": "AMAZON.FirstName",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.1526112623395.1322157979624"
+                            }
+                        }
+                    ]
                 }
             ],
             "delegationStrategy": "ALWAYS"
@@ -1008,7 +1129,59 @@
                         "value": "what is the name of the catalogue?"
                     }
                 ]
+            },
+            {
+                "id": "Elicit.Slot.1411552887839.110214913936",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "what is the item name?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "in which item?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.1411552887839.1451325821214",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "what is the catalogue name?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "in which catalogue?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.1526112623395.1548797091222",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "what is the item name?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "in which item?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.1526112623395.1322157979624",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "in which catalogue?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "what is the catalogue name?"
+                    }
+                ]
             }
         ]
     }
-  }
+}
