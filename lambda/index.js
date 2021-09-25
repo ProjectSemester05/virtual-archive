@@ -3,6 +3,7 @@ const AWS = require('aws-sdk');
 const ddb = new AWS.DynamoDB.DocumentClient({region: 'us-east-1'});
 const dynamoDBTableName = "CatalogueDB";
 //const main = require('./main.json');
+// const getRemoteData = require('./api-data.js');
 
 const getRemoteData = (url) => new Promise((resolve, reject) => {
   const client = url.startsWith('https') ? require('https') : require('http');
@@ -102,7 +103,7 @@ const OpenCatalogueHandler = {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'OpenCatalogueIntent';
     },
-async handle(handlerInput) {
+    async handle(handlerInput) {
 
         const {requestEnvelope, responseBuilder} = handlerInput;
         const {intent} = requestEnvelope.request;
@@ -113,7 +114,7 @@ async handle(handlerInput) {
 
         let catalogUUID = ""
 
-        await getRemoteData(`https://heitt4m2fe.execute-api.us-east-1.amazonaws.com/dev/catalogue-by-name/${catalog}`)
+        await getRemoteData(`https://wuaatihexl.execute-api.us-east-1.amazonaws.com/dev/catalogue-by-name/${catalog}`)
             .then((response) => {
                 const data = JSON.parse(response);
 
@@ -124,7 +125,7 @@ async handle(handlerInput) {
                 console.log(`ERROR: ${err.message}`);
             })
 
-        await getRemoteData(`https://heitt4m2fe.execute-api.us-east-1.amazonaws.com/dev/item-by-catalogue-uuid/${catalogUUID}`)
+        await getRemoteData(`https://wuaatihexl.execute-api.us-east-1.amazonaws.com/dev/item-by-catalogue-uuid/${catalogUUID}`)
             .then((response) => {
                 const data = JSON.parse(response);
 
@@ -279,7 +280,7 @@ const ViewDescriptionHandler = {
     
             let catalogUUID = ""
     
-            await getRemoteData(`https://heitt4m2fe.execute-api.us-east-1.amazonaws.com/dev/catalogue-by-name/${catalog}`)
+            await getRemoteData(`https://wuaatihexl.execute-api.us-east-1.amazonaws.com/dev/catalogue-by-name/${catalog}`)
                 .then((response) => {
                     const data = JSON.parse(response);
     
@@ -290,7 +291,7 @@ const ViewDescriptionHandler = {
                     console.log(`ERROR: ${err.message}`);
                 })
     
-            await getRemoteData(`https://heitt4m2fe.execute-api.us-east-1.amazonaws.com/dev/item-by-catalogue-uuid/${catalogUUID}`)
+            await getRemoteData(`https://wuaatihexl.execute-api.us-east-1.amazonaws.com/dev/item-by-catalogue-uuid/${catalogUUID}`)
             .then((response) => {
                 const data = JSON.parse(response);
 
@@ -339,8 +340,9 @@ const ViewReminderHandler = {
             let speechText = ``;
     
             let catalogUUID = ""
-    
-            await getRemoteData(`https://heitt4m2fe.execute-api.us-east-1.amazonaws.com/dev/catalogue-by-name/${catalog}`)
+            let item_uuid = '';
+            
+            await getRemoteData(`https://wuaatihexl.execute-api.us-east-1.amazonaws.com/dev/catalogue-by-name/${catalog}`)
                 .then((response) => {
                     const data = JSON.parse(response);
     
@@ -351,16 +353,17 @@ const ViewReminderHandler = {
                     console.log(`ERROR: ${err.message}`);
                 })
     
-            await getRemoteData(`https://heitt4m2fe.execute-api.us-east-1.amazonaws.com/dev/item-by-catalogue-uuid/${catalogUUID}`)
+            await getRemoteData(`https://wuaatihexl.execute-api.us-east-1.amazonaws.com/dev/item-by-catalogue-uuid/${catalogUUID}`)
             .then((response) => {
                 const data = JSON.parse(response);
 
                 let allItems = data.Items
-
+                
 
                 allItems.forEach(dbitem => {
                     if(dbitem.ItemName.localeCompare(item) === 0){
                         speechText = `Reminder of ${item} is ${dbitem.Reminder}`;
+                        item_uuid = dbitem.UUID
                     }
                 });
 
@@ -374,6 +377,20 @@ const ViewReminderHandler = {
             .catch((err) => {
                 console.log(`ERROR: ${err.message}`);
             })
+            if(item_uuid !== ''){
+                await getRemoteData(`https://wuaatihexl.execute-api.us-east-1.amazonaws.com/dev/reminder/${item_uuid}`)
+                    .then((response) => {
+                        const data = JSON.parse(response);
+        
+                        let reminder_data = data.reminder.Reminder;
+                        speechText = `Reminder of ${item} is ${reminder_data}`;
+                    })
+                .catch((err) => {
+                    console.log(`ERROR: ${err.message}`);
+                })
+                
+            }
+
 
 
         return handlerInput.responseBuilder

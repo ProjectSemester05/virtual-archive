@@ -102,6 +102,7 @@
                         }
                     ],
                     "samples": [
+                        "new catalogue {catalog}",
                         "create a catalogue {catalog}",
                         "create a catalogue"
                     ]
@@ -189,6 +190,7 @@
                         }
                     ],
                     "samples": [
+                        "add reminder to {item}",
                         "add reminder",
                         "add reminder to {item} in {catalogue} "
                     ]
